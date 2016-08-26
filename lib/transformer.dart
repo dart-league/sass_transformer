@@ -20,9 +20,9 @@ class SassTransformer extends AggregateTransformer {
       ['.scss', '.sass'].any((e) => e == id.extension) ? id.extension : null;
 
   Future apply(AggregateTransform transform) async {
-    var assets = transform.primaryInputs;
+    var assets = await transform.primaryInputs.toList();
 
-    await for (var asset in assets) {
+    return Future.wait(assets.map((asset) async {
       var id = asset.id;
 
       // files excluded of entry_points are not processed
@@ -30,7 +30,8 @@ class SassTransformer extends AggregateTransformer {
       if (basename(id.path).startsWith('_')) {
         // if asset is not an entry point it wild be consumed
         // (this is to no output scss files in build folder)
-        return new Future(() => transform.consumePrimary(id));
+        transform.consumePrimary(id);
+        return;
       }
 
       var content = await transform.readInputAsString(id);
@@ -52,6 +53,6 @@ class SassTransformer extends AggregateTransformer {
       } catch (e) {
         print(e);
       }
-    }
+    }));
   }
 }
