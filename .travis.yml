@@ -2,4 +2,6 @@ language: dart
 dart:
   - stable
   - dev
+before_install:
+- gem install sass
 script: pub run test
