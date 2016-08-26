@@ -1,5 +1,5 @@
 name: sass_transformer
-version: 0.5.0
+version: 0.1.0
 description: >
   Sass-transformer for pub-serve and pub-build.
 authors:
@@ -10,4 +10,3 @@ dependencies:
   utf: ^0.9.0
 dev_dependencies:
   test: ^0.12.0
-  mock: ^0.12.0
