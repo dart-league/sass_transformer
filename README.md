@@ -26,9 +26,9 @@ If your main file imports other files outside the main files folder, you need to
 
 ```yaml
 dependencies:
-  sass: any
+  sass_transformer: any
 transformers:
-  - sass:
+  - sass_transformer:
       include_paths: path/to/folder/with/other/scss
 ```
 
