@@ -4,7 +4,6 @@ description: >
   Sass-transformer for pub-serve and pub-build.
 authors:
   - Luis Vargas <luisvargastijerino@gmail.com>
-  - Juha Komulainen <juha.komulainen@evident.fi>
 homepage: https://github.com/dart-league/dart-sass
 dependencies:
   barback: ^0.15.0
