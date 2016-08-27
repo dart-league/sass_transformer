@@ -11,7 +11,7 @@ class Sass {
   String executable = defaultExecutable;
   bool scss = false;
   String style = null; // nested, compact, compressed, expanded
-  List<String> loadPath = [];
+  Set<String> loadPath = new Set();
   bool lineNumbers = false;
   bool compass = false;
 

@@ -35,10 +35,11 @@ class SassTransformer extends AggregateTransformer {
       }
 
       var content = await transform.readInputAsString(id);
-      print('[dart-sass] processing: ${id}');
+      print('[sass_transformer] processing: ${id}');
 
       //TODO: add support for no-symlinks packages
-      options.includePaths.add(dirname(id.path).replaceFirst('lib/', 'packages/${id.package}/'));
+      options.includePaths.add(dirname(id.path).replaceFirst('lib', 'packages/${id.package}'));
+      print('[sass_transformer] includePaths: ${options.includePaths}');
 
       try {
         var output = await (new Sass()

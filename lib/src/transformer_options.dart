@@ -4,7 +4,7 @@ import 'dart:io';
 class TransformerOptions {
 
   /// include_path: /lib/sassIncludes - variable and mixims files
-  final List<String> includePaths;
+  final Set<String> includePaths;
 
   /// output: web/output.css - result file. If '' same as web/input.css
   final String output;
@@ -42,10 +42,10 @@ class TransformerOptions {
       return value ?? defaultValue;
     }
 
-    List<String> readStringList(value, [defaultValue]) {
-      if (value is List<String>) return value;
-      if (value is String) return [value];
-      return value ?? defaultValue;
+    Set<String> readStringList(value, [defaultValue]) {
+      if (value is List<String>) return new Set.from(value);
+      if (value is String) return new Set.from([value]);
+      return new Set.from(defaultValue);
     }
 
     return new TransformerOptions._(
