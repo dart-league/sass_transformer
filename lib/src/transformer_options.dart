@@ -36,7 +36,7 @@ class TransformerOptions {
   });
 
   /// Creates a [TransformerOptions] object from [configuration] Map
-  factory TransformerOptions.parse(Map configuration){
+  factory TransformerOptions(Map configuration){
     config(key, defaultValue) {
       var value = configuration[key];
       return value ?? defaultValue;

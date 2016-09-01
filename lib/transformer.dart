@@ -10,10 +10,13 @@ import 'src/transformer_options.dart';
 
 /// Transformer used by `pub build` and `pub serve` to convert Sass-files to CSS.
 class SassTransformer extends AggregateTransformer {
-  SassTransformer.asPlugin(BarbackSettings settings) :
-        options = new TransformerOptions.parse(settings.configuration);
+  SassTransformer.asPlugin(BarbackSettings settings)
+      : options = new TransformerOptions(settings.configuration),
+        mode = settings.mode;
 
   final TransformerOptions options;
+
+  final BarbackMode mode;
 
   // Only process assets where the extension is ".scss" or ".sass".
   classifyPrimary(AssetId id) =>
@@ -30,7 +33,7 @@ class SassTransformer extends AggregateTransformer {
       if (basename(id.path).startsWith('_')) {
         // if asset is not an entry point it wild be consumed
         // (this is to no output scss files in build folder)
-        transform.consumePrimary(id);
+        if (mode == BarbackMode.RELEASE) transform.consumePrimary(id);
         return;
       }
 
@@ -39,8 +42,8 @@ class SassTransformer extends AggregateTransformer {
 
       //TODO: add support for no-symlinks packages
       options.includePaths.add(dirname(id.path).replaceFirst('lib', 'packages/${id.package}'));
-      print('[sass_transformer] includePaths: ${options.includePaths}');
-
+      if (mode == BarbackMode.DEBUG)
+        print('[sass_transformer] includePaths: ${options.includePaths}');
       try {
         var output = await (new Sass()
                 ..scss = id.extension == '.scss'
@@ -50,7 +53,7 @@ class SassTransformer extends AggregateTransformer {
         var newId = id.changeExtension('.css');
         transform.addOutput(new Asset.fromString(newId, output));
         // (this is to no output scss files in build folder)
-        transform.consumePrimary(id);
+        if (mode == BarbackMode.RELEASE) transform.consumePrimary(id);
       } catch (e) {
         print(e);
       }
