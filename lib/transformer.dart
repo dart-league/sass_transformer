@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import 'sass.dart';
 import 'src/transformer_options.dart';
 
-
 /// Transformer used by `pub build` and `pub serve` to convert Sass-files to CSS.
 class SassTransformer extends AggregateTransformer {
   SassTransformer.asPlugin(BarbackSettings settings)
@@ -41,15 +40,17 @@ class SassTransformer extends AggregateTransformer {
       print('[sass_transformer] processing: ${id}');
 
       //TODO: add support for no-symlinks packages
-      options.includePaths.add(dirname(id.path).replaceFirst('lib', 'packages/${id.package}'));
+      options.includePaths
+          .add(dirname(id.path).replaceFirst('lib', 'packages/${id.package}'));
       if (mode == BarbackMode.DEBUG)
         print('[sass_transformer] includePaths: ${options.includePaths}');
       try {
         var output = await (new Sass()
-                ..scss = id.extension == '.scss'
-                ..loadPath = options.includePaths
-                ..executable = options.executable
-              ).transform(content);
+              ..scss = id.extension == '.scss'
+              ..loadPath = options.includePaths
+              ..executable = options.executable
+              ..compass = options.compass)
+            .transform(content);
         var newId = id.changeExtension('.css');
         transform.addOutput(new Asset.fromString(newId, output));
         // (this is to no output scss files in build folder)
