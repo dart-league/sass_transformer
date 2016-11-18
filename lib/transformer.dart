@@ -6,6 +6,7 @@ import 'package:barback/barback.dart';
 import 'package:path/path.dart';
 import 'sass.dart';
 import 'src/transformer_options.dart';
+import 'dart:isolate';
 
 /// Transformer used by `pub build` and `pub serve` to convert Sass-files to CSS.
 class SassTransformer extends AggregateTransformer {
@@ -38,6 +39,14 @@ class SassTransformer extends AggregateTransformer {
 
       var content = await transform.readInputAsString(id);
       print('[sass_transformer] processing: ${id}');
+
+      var regExp = new RegExp(r'@import \"packages/(\w+)(.*)/(\w+)\";');
+      content = await content.replaceAllMapped(regExp, (match) async {
+        final s = 'package:${match.group(1)}${match.group(2)}/_${match.group(3)}.scss';
+        // TODO return string not a Future
+        var uri =  await Isolate.resolvePackageUri(Uri.parse(s));
+        return '@import "${s}";';
+      });
 
       //TODO: add support for no-symlinks packages
       options.includePaths

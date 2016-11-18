@@ -25,7 +25,8 @@ main() {
       var outputId = new AssetId(testPackage, 'test/foo/foo.css');
       expect(barback.getAssetById(outputId).then((x) => x.readAsString()),
           completion('.foo h1 {\n'
-              '  color: red; }\n'
+              '  color: red;\n'
+              '  background-color: #55595c; }\n'
               ''));
     });
   });
