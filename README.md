@@ -1,3 +1,5 @@
+# DEPRECATED - use `grind sass` task instead
+
 [![Build Status](https://travis-ci.org/dart-league/sass_transformer.svg?branch=master)](https://travis-ci.org/dart-league/sass_transformer)
 
 ## Sass integration for pub
