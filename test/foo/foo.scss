@@ -1,7 +1,9 @@
 @import "bar";
+@import "packages/bootstrap_sass/scss/variables";
 
 .foo {
   h1 {
     color: $col;
+    background-color: $gray;
   }
 }
